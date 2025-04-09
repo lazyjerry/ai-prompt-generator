@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 提示詞產生器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+        }
+        .prompt-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .textarea-container {
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .textarea-container:hover .copy-btn {
+            opacity: 1;
+        }
+        .textarea-animate {
+            transition: all 0.3s ease;
+        }
+        .textarea-animate:focus {
+            box-shadow: 0 0 0 2px rgba(167, 119, 227, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <div class="gradient-bg py-6 px-4 shadow-lg">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold text-white text-center">AI 提示詞產生器</h1>
+            <p class="text-white text-opacity-90 text-center mt-2">快速產生高品質 AI 提示詞，提升效率與創意</p>
+        </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- 快速按鈕區 -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">常用提示詞</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                <button onclick="insertPrompt('translate')" class="prompt-btn bg-green-100 hover:bg-green-200 text-green-800 py-3 px-4 rounded-lg transition-all duration-200 flex items-center">
+                    <i class="fas fa-language mr-2"></i> 翻譯
+                </button>
+                <button onclick="insertPrompt('tarot')" class="prompt-btn bg-indigo-100 hover:bg-indigo-200 text-indigo-800 py-3 px-4 rounded-lg transition-all duration-200 flex items-center">
+                    <i class="fas fa-star mr-2"></i> 塔羅牌解讀
+                </button>
+                <button onclick="insertPrompt('summary')" class="prompt-btn bg-blue-100 hover:bg-blue-200 text-blue-800 py-3 px-4 rounded-lg transition-all duration-200 flex items-center">
+                    <i class="fas fa-file-alt mr-2"></i> 摘要
+                </button>
+                <button onclick="insertPrompt('proofread')" class="prompt-btn bg-yellow-100 hover:bg-yellow-200 text-yellow-800 py-3 px-4 rounded-lg transition-all duration-200 flex items-center">
+                    <i class="fas fa-spell-check mr-2"></i> 錯字糾正
+                </button>
+                <button onclick="insertPrompt('refine')" class="prompt-btn bg-purple-100 hover:bg-purple-200 text-purple-800 py-3 px-4 rounded-lg transition-all duration-200 flex items-center">
+                    <i class="fas fa-magic mr-2"></i> 文句潤飾
+                </button>
+                <button onclick="insertPrompt('ci4model')" class="prompt-btn bg-teal-100 hover:bg-teal-200 text-teal-800 py-3 px-4 rounded-lg transition-all duration-200 flex items-center">
+    <i class="fas fa-database mr-2"></i> CI4 Model 產生
+</button>
+                <button onclick="insertPrompt('phpdoc')" class="prompt-btn bg-pink-100 hover:bg-pink-200 text-pink-800 py-3 px-4 rounded-lg transition-all duration-200 flex items-center">
+                    <i class="fas fa-comment-dots mr-2"></i> PHPDoc 註解
+                </button>
+                <button onclick="insertPrompt('js2jquery')" class="prompt-btn bg-orange-100 hover:bg-orange-200 text-orange-800 py-3 px-4 rounded-lg transition-all duration-200 flex items-center">
+                    <i class="fab fa-js mr-2"></i> JS ➜ jQuery
+                </button>
+                <button onclick="insertPrompt('jquery2js')" class="prompt-btn bg-orange-200 hover:bg-orange-300 text-orange-900 py-3 px-4 rounded-lg transition-all duration-200 flex items-center">
+                    <i class="fab fa-js-square mr-2"></i> jQuery ➜ JS
+                </button>
+                <button onclick="insertPrompt('curl2php')" class="prompt-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-all duration-200 flex items-center">
+                    <i class="fas fa-terminal mr-2"></i> curl ➜ PHP
+                </button>
+            </div>
+        </div>
+
+        <!-- 主要輸入區 -->
+        <div class="textarea-container mb-6">
+            <textarea id="promptTextarea" class="textarea-animate w-full h-[500px] p-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 resize-none" placeholder="在此輸入或生成您的 AI 提示詞..."></textarea>
+            <button id="copyBtn" class="copy-btn bg-purple-500 hover:bg-purple-600 text-white p-2 rounded-full shadow-md">
+                <i class="fas fa-copy"></i>
+            </button>
+        </div>
+
+        <!-- 操作按鈕 -->
+        <div class="flex flex-wrap justify-center gap-4">
+            <button onclick="copyToClipboard()" class="bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-200 flex items-center">
+                <i class="fas fa-copy mr-2"></i> 複製提示詞
+            </button>
+            <button onclick="clearPrompt()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-200 flex items-center">
+                <i class="fas fa-trash-alt mr-2"></i> 清空內容
+            </button>
+        </div>
+    </div>
+
+    <!-- 提示詞模板 -->
+    <div id="promptTemplates" class="hidden">
+        <div id="translate">請將以下內容翻譯成[目標語言]，並確保保留原文的語意與語氣，不要改變任何風格或重點。</div>
+        <div id="tarot">我抽到的塔羅牌是：[牌名]。請根據這張牌給我一個深入的解析，包含：1. 這張牌的基本含義 2. 與現況的關聯 3. 潛在的提醒與建議 用簡潔但有深度的方式解釋，適合初學者理解。</div>
+        <div id="summary">請針對以下文章進行摘要，涵蓋：1. 主題與重點 2. 作者觀點 3. 結論與可能影響 字數控制在300字以內，風格清楚易讀。</div>
+        <div id="proofread">請幫我檢查以下文字中的錯字與語法錯誤，並以建議方式標示修改內容。</div>
+        <div id="refine">請幫我潤飾以下內容，使其語氣更自然、流暢，保留原意不變。</div>
+        <div id="ci4model">這是一段 SQL CREATE TABLE 的語法，請根據這段語法產生對應的 CodeIgniter 4 Model class 程式碼。請包含：
+1. `$table`、`$primaryKey`、`$allowedFields` 屬性設定
+2. `useSoftDeletes`、`useTimestamps` 等常用選項
+3. 命名規則符合 CI4 標準慣例
+4. 加上合適的 PHPDoc 註解</div>
+        <div id="phpdoc">請幫我為以下 PHP function 撰寫完整的 PHPDoc 註解，包含 @param、@return、@throws（若有）、@example 範例等，語言使用繁體中文。</div>
+        <div id="js2jquery">請將以下 JavaScript 程式碼轉換為 jQuery 實作，確保功能一致並遵循 jQuery 語法風格。</div>
+        <div id="jquery2js">請將以下 jQuery 程式碼轉換為純 JavaScript（Vanilla JS）實作，語法現代化且不依賴任何第三方函式庫。</div>
+        <div id="curl2php">請將以下 curl 指令轉換為 PHP function：1. 使用 curl 套件（非 shell_exec） 2. 支援動態傳入 URL、headers、body、method 3. 加上清楚的註解與參數說明 4. 回傳結果 JSON。</div>
+    </div>
+
+    <script>
+        function insertPrompt(type) {
+            const template = document.getElementById(type).textContent;
+            const textarea = document.getElementById('promptTextarea');
+            textarea.value = template;
+            textarea.focus();
+            textarea.classList.add('animate-pulse');
+            setTimeout(() => {
+                textarea.classList.remove('animate-pulse');
+            }, 500);
+        }
+
+        function copyToClipboard() {
+            const textarea = document.getElementById('promptTextarea');
+            textarea.select();
+            document.execCommand('copy');
+            const copyBtn = document.getElementById('copyBtn');
+            const originalIcon = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+            copyBtn.classList.remove('bg-purple-500');
+            copyBtn.classList.add('bg-green-500');
+            setTimeout(() => {
+                copyBtn.innerHTML = originalIcon;
+                copyBtn.classList.remove('bg-green-500');
+                copyBtn.classList.add('bg-purple-500');
+            }, 2000);
+        }
+
+        function clearPrompt() {
+            document.getElementById('promptTextarea').value = '';
+        }
+
+        document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+    </script>
+</body>
+</html>
