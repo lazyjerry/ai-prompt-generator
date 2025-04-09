@@ -39,6 +39,7 @@ git clone https://github.com/your-username/ai-prompt-helper.git
 
 .
 ├── index.html         # 主頁面
+├──  LICENSE	       # LICENSE
 └── README.md          # 本說明文件
 
 📦 未來可擴充方向
