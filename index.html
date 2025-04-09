@@ -104,10 +104,14 @@
     <div id="promptTemplates" class="hidden">
         <div id="translate">請將以下內容翻譯成[]，並確保保留原文的語意與語氣，不要改變任何風格或其他未翻譯的內容。</div>
         <div id="tarot">我抽到三張塔羅牌，這是時間之流的排陣，請幫我解釋牌意並且分析「」，分別是「」、「」、「」。</div>
-        <div id="summary">請針對以下文章進行摘要，涵蓋：1. 主題與重點 2. 作者觀點 3. 結論與可能影響 請以列點呈現。</div>
+        <div id="summary">請針對以下文章進行摘要，涵蓋：
+            1. 主題與重點 
+            2. 作者觀點 
+            3. 結論與可能影響 請以列點呈現。</div>
         <div id="proofread">請幫我檢查以下文字中的錯字與語法錯誤，並以建議方式標示修改內容。</div>
         <div id="refine">請幫我潤飾以下內容，使其語氣更自然、流暢，保留原意不變。</div>
-        <div id="ci4model">這是一段 SQL CREATE TABLE 的語法，請根據這段語法產生對應的 CodeIgniter 4 Model class 程式碼。請包含：
+        <div id="ci4model">這是一段 SQL CREATE TABLE 的語法，請根據這段語法產生對應的 CodeIgniter 4 Model class 程式碼。
+            請包含：
 1. `$table`、`$primaryKey`、`$allowedFields` 屬性設定
 2. `useSoftDeletes`、`useTimestamps` 等常用選項
 3. 命名規則符合 CI4 標準慣例
@@ -115,7 +119,11 @@
         <div id="phpdoc">請幫我為以下 PHP function 撰寫完整的 PHPDoc 註解，包含 @param、@return、@throws（若有）、@example 範例等，語言使用繁體中文。</div>
         <div id="js2jquery">請將以下 JavaScript 程式碼轉換為 jQuery 實作，確保功能一致並遵循 jQuery 語法風格。</div>
         <div id="jquery2js">請將以下 jQuery 程式碼轉換為純 JavaScript（Vanilla JS）實作，語法現代化且不依賴任何第三方函式庫。</div>
-        <div id="curl2php">請將以下 curl 指令轉換為 PHP function：1. 使用 curl 套件（非 shell_exec） 2. 支援動態傳入 URL、headers、body、method 3. 加上清楚的註解與參數說明 4. 回傳結果 JSON。</div>
+        <div id="curl2php">請將以下 curl 指令轉換為 PHP function：
+            1. 使用 curl 套件（非 shell_exec） 
+            2. 支援動態傳入 URL、headers、body、method 
+            3. 加上清楚的註解與參數說明 
+            4. 回傳結果 JSON。</div>
     </div>
 
     <script>
